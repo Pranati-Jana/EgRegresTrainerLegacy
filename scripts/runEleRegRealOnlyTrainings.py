@@ -35,6 +35,11 @@ def main():
         input_real_ic = "{}/DoubleElectron_FlatPt-1To100_2023ScenarioFlatPU0to80RAW_106X_mcRun3_2023_realistic_v3_ext1-v2_AODSIM_EgRegTreeV5Refined2023Reg2018.root".format(args.input_dir)    
         ecal_eventnr_cut = "evt.eventnr%3==1"
         ep_eventnr_cut = "evt.eventnr%3==2" 
+    elif args.era=='Run3_2023_UPC':
+        era_name = "Run3_2023_UPC"
+        input_real_ic = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/EGTree/2024_02_06/PGUN_2023Run3/EGTree_DoubleElectron_FlatPt0p5To50_RealEcalIC_fwRec_MC_HIRun2023_2024_02_06.root"
+        ecal_eventnr_cut = "evt.eventnr%4==1" #5million electrons
+        ep_eventnr_cut = "evt.eventnr%4==2" #5million electrons
     else:
         raise ValueError("era {} is invalid, options are 2016/2017/2018".format(era))
 

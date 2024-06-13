@@ -4,10 +4,11 @@
 
 
 namespace resStudies{
-  std::string etStr = "20 < E_{T}^{gen} < 60 GeV";
+  std::string etStr = "3 < E_{T}^{gen} < 10 GeV";
   std::string eTypeStr = "";
   float fitMin = 0.6;
   float fitMax = 1.2;
+  std::string etaStr = "Endcap";
 }
 
 bool isNextToRingBoundary(int iX,int iY,float eta)
@@ -71,6 +72,7 @@ std::vector<TH2*> makeHists(TTree* tree,const std::vector<double>& xbins,int nrB
   return hists;
 }
 
+
 TH1* compareRes(const std::pair<TH2*,std::string>& newCorrHist2D,
 		const std::pair<TH2*,std::string>& oldCorrHist2D,
 		const std::pair<TH2*,std::string>& rawHist2D,int binNr)
@@ -117,13 +119,15 @@ TH1* compareRes(const std::pair<TH2*,std::string>& newCorrHist2D,
 
   //  auto labelEta = HistFuncs::makeLabel(binStr.str(),0.685,0.811,0.938,0.88);
   auto labelEta = HistFuncs::makeLabel(binStr.str(),0.149,0.503484,0.402,0.573171);
-  labelEta->Draw();
+  //std::string etaStr = "2 < E_{T}^{gen} < 3 GeV";
+  auto labelEta1 = HistFuncs::makeLabel(resStudies::etaStr,0.149,0.503484,0.402,0.573171);
+  labelEta1->Draw();
 
   auto labelEt = HistFuncs::makeLabel(resStudies::etStr,0.149,0.58885,0.402,0.658537);
   labelEt->Draw();
 
   auto labelEType = HistFuncs::makeLabel(resStudies::eTypeStr,0.149,0.433798,0.402,0.503484);
-  labelEType->Draw();
+  //labelEType->Draw();
 
   // rawHist->GetXaxis()->SetNdivisions(510);  
   //rawHist->GetXaxis()->SetRangeUser(0.5,1.4);
@@ -150,12 +154,13 @@ TH1* compareRes(TH2* newCorrHist2D,TH2* oldCorrHist2D,TH2* rawHist2D,int binNr)
 
 void printAllResPlots(TH2* newCorrHist2D,TH2* oldCorrHist2D,TH2* rawHist2D,const std::string& baseName)
 {
-  auto label = HistFuncs::makeLabel("20 < E^{gen}_{T} < 60 GeV",0.693207,0.759582,0.945991,0.829268);
+  auto label = HistFuncs::makeLabel("2 < E^{gen}_{T} < 3 GeV",0.693207,0.759582,0.945991,0.829268);
 
   for(int binNr=1;binNr<=newCorrHist2D->GetNbinsX();binNr++){
     compareRes(newCorrHist2D,oldCorrHist2D,rawHist2D,binNr);
     std::string histName = baseName+"_binNr"+std::to_string(binNr)+"_eta"+AnaFuncs::convertToTTreeStr(newCorrHist2D->GetXaxis()->GetBinLowEdge(binNr))+"To"+AnaFuncs::convertToTTreeStr(newCorrHist2D->GetXaxis()->GetBinLowEdge(binNr+1));
     label->Draw();
     HistFuncs::print(histName,"c1");
+    cout << "Test:" << endl;
   }
 }
