@@ -39,7 +39,7 @@
 size_t gPrecision=3;
 namespace resFit{
   enum class FitType{CB,Cruijff};
-  FitType fitType = FitType::CB;
+  FitType fitType = FitType::Cruijff;
 }
 
 struct ResFitParam {
@@ -154,7 +154,7 @@ CBFitParam makeResFitSimple(TH1* hist,float fitMin,float fitMax);
 ResFitParam makeResFit(TH1* hist,float fitMin,float fitMax);
 
 namespace cbfit {
-  float fitMin=0.8;
+  float fitMin=0.9;
   float fitMax=1.1;
   
 }
@@ -413,8 +413,8 @@ ResFitParam makeResCBFit(TH1* hist,float xmin,float xmax)
   res.setMin("cache",xmin) ;
   res.setMax("cache",xmax) ;
 
-  RooRealVar  nsig("N_{S}", "#signal events", 90000, 0, 100000000.);
-  RooRealVar  cbSigma("#sigma_{CB}","CB Width", 1.5, 0.0, 10,"");
+  RooRealVar  nsig("N_{S}", "#signal events", 9000000, 0, 1000000000.);
+  RooRealVar  cbSigma("#sigma_{CB}","CB Width", 0.01, 0.0, 10,"");
   RooRealVar mean( "#DeltaE", "mean_{cb}", 1. ,0.5,1.5,"");
   //RooRealVar alpha( "alpha_{cb}", "alpha_{cb}", 1.2 ,0,10);
   //  RooRealVar n( "n_{cb}", "n_{cb}", 0.81 ,0,20);
@@ -438,6 +438,8 @@ ResFitParam makeResCBFit(TH1* hist,float xmin,float xmax)
 
   // model.paramOn(plot,RooFit::Format("NEU", RooFit::AutoPrecision(2)),RooFit::ShowConstants(true),RooFit::Layout(0.6,0.95,0.8),RooFit::Parameters(RooArgSet(mean,cbSigma))); 
   model.paramOn(plot,RooFit::Format("NEU", RooFit::AutoPrecision(2)),RooFit::ShowConstants(true),RooFit::Layout(0.6,0.95,0.8));//,RooFit::Parameters(RooArgSet(mean,cbSigma))); 
+   double chi2 = plot->chiSquare();
+  std::cout << "Chi-squared: " << chi2 << std::endl;
 
   ResFitParam fitParam;
   fitParam.fill(mean,cbSigma,plot);
@@ -451,8 +453,8 @@ ResFitParam makeResCruijffFit(TH1* hist,float xmin,float xmax)
   res.setMin("cache",xmin) ;
   res.setMax("cache",xmax) ;
 
-  RooRealVar  nsig("N_{S}", "#signal events", 90000, 0, 100000000.);
-  RooRealVar mean( "#DeltaE", "mean_{cb}", 1. ,0.5,1.5,"");
+  RooRealVar  nsig("N_{S}", "#signal events", 900000, 0, 1000000000.);
+  RooRealVar mean( "#DeltaE", "mean_{cb}", 1. ,0.2,1.5,"");
   RooRealVar sigmaL("#sigma_{L}","#sigma_{L}", 0.02, 0.0, 0.5);
   RooRealVar sigmaR("#sigma_{R}","#sigma_{R}", 0.02, 0.0, 0.5);
   RooRealVar alphaL( "alpha_{L}", "alpha_{L}", 0.1 ,0,2);
@@ -474,7 +476,8 @@ ResFitParam makeResCruijffFit(TH1* hist,float xmin,float xmax)
 
   // model.paramOn(plot,RooFit::Format("NEU", RooFit::AutoPrecision(2)),RooFit::ShowConstants(true),RooFit::Layout(0.6,0.95,0.8),RooFit::Parameters(RooArgSet(mean,cbSigma))); 
   model.paramOn(plot,RooFit::Format("NEU", RooFit::AutoPrecision(2)),RooFit::ShowConstants(true),RooFit::Layout(0.6,0.95,0.8));//,RooFit::Parameters(RooArgSet(mean,cbSigma))); 
-
+   double chi2 = plot->chiSquare();
+  std::cout << "Chi-squared: " << chi2 << std::endl;
   ResFitParam fitParam;
   fitParam.fill(mean,sigmaL,sigmaR,plot);
   return fitParam;

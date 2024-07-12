@@ -4,11 +4,11 @@
 
 
 namespace resStudies{
-  std::string etStr = "3 < E_{T}^{gen} < 10 GeV";
+  std::string etStr = "1 < E_{T}^{gen} < 10 GeV";
   std::string eTypeStr = "";
   float fitMin = 0.6;
   float fitMax = 1.2;
-  std::string etaStr = "Endcap";
+  std::string etaStr = "Endcap Electrons";
 }
 
 bool isNextToRingBoundary(int iX,int iY,float eta)
@@ -30,6 +30,7 @@ TGraph* makeResVsPlot(TH2* hist2D,float fitMin,float fitMax,bool isMean)
     xErrs.push_back(hist2D->GetXaxis()->GetBinWidth(binNr)/2.);
     yValues.push_back(isMean ? cbFit.scale : cbFit.sigma);
     yErrs.push_back(isMean ? cbFit.scaleErr : cbFit.sigmaErr);
+     
   }
   auto graph = new TGraphErrors(xValues.size(),xValues.data(),yValues.data(),xErrs.data(),yErrs.data());
   return graph;
@@ -81,8 +82,10 @@ TH1* compareRes(const std::pair<TH2*,std::string>& newCorrHist2D,
   auto make1DHist = [](TH2* hist2D,const std::string& baseName,int binNr){ 
     std::ostringstream histName;
     histName <<baseName<<hist2D->GetXaxis()->GetBinLowEdge(binNr)<<"To"<<hist2D->GetXaxis()->GetBinUpEdge(binNr)<<"GeV";
-    TH1* hist = (TH1*) hist2D->ProjectionY(histName.str().c_str(),binNr,binNr)->Clone((histName.str()+"Tmp").c_str());
+    //TH1* hist = (TH1*) hist2D->ProjectionY(histName.str().c_str(),binNr,binNr)->Clone((histName.str()+"Tmp").c_str());
+    TH1* hist = (TH1*) hist2D->ProjectionY(histName.str().c_str());
     hist->SetDirectory(0);
+   
     return hist;
   }; 
   
@@ -99,10 +102,11 @@ TH1* compareRes(const std::pair<TH2*,std::string>& newCorrHist2D,
   auto newCorrFitParam = makeResFit(newCorrHist,resStudies::fitMin,resStudies::fitMax);
   auto oldCorrFitParam = makeResFit(oldCorrHist,resStudies::fitMin,resStudies::fitMax);
   auto rawFitParam = makeResFit(rawHist,resStudies::fitMin,resStudies::fitMax);
+  
   newCorrFitParam.legName = newCorrHist2D.second;
   oldCorrFitParam.legName = oldCorrHist2D.second;
   rawFitParam.legName = rawHist2D.second;
-  
+  //std::cout << "Chi2 new regrssion:" << newCorrFitParam.chiSquare() <<  std::endl;
   plotResHist(rawFitParam,oldCorrFitParam,newCorrFitParam);
     
   auto meanNewLabel = HistFuncs::makeLabel(newCorrFitParam.resLabel(),0.149,0.677,0.402,0.744);
@@ -142,6 +146,8 @@ TH1* compareRes(const std::pair<TH2*,std::string>& newCorrHist2D,
   std::cout <<oldCorrHist2D.second<<" "<<oldCorrHist->Integral()<<std::endl;
   std::cout <<rawHist2D.second<<" "<<rawHist->Integral()<<std::endl;
   
+  c1->SaveAs("Plots/Ele_pt_1-10GeV_Endcap.png");
+  c1->SaveAs("Plots/Ele_pt_1-10GeV_Endcap.pdf");
 
   return rawHist;
 }
@@ -154,7 +160,7 @@ TH1* compareRes(TH2* newCorrHist2D,TH2* oldCorrHist2D,TH2* rawHist2D,int binNr)
 
 void printAllResPlots(TH2* newCorrHist2D,TH2* oldCorrHist2D,TH2* rawHist2D,const std::string& baseName)
 {
-  auto label = HistFuncs::makeLabel("2 < E^{gen}_{T} < 3 GeV",0.693207,0.759582,0.945991,0.829268);
+  auto label = HistFuncs::makeLabel("8 < E^{gen}_{T} < 8.5 GeV",0.693207,0.759582,0.945991,0.829268);
 
   for(int binNr=1;binNr<=newCorrHist2D->GetNbinsX();binNr++){
     compareRes(newCorrHist2D,oldCorrHist2D,rawHist2D,binNr);
