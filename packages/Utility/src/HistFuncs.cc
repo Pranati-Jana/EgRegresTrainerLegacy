@@ -1372,7 +1372,7 @@ TH1* HistFuncs::plotWithRatio(HistFuncs::HistOpts numer,HistFuncs::HistOpts deno
   ratioHist->GetYaxis()->SetLabelSize(0.1);
   ratioHist->GetYaxis()->SetTitleSize(0.1);
   ratioHist->GetYaxis()->SetTitleOffset(0.65); 
-  ratioHist->GetYaxis()->SetTitle("ratio");   
+  ratioHist->GetYaxis()->SetTitle("ratio1");   
   
   ratioHist->Draw();
   spectrumPad->cd();
@@ -1417,7 +1417,7 @@ TH1* HistFuncs::plotWithRatio(HistFuncs::HistOpts numer1,HistFuncs::HistOpts num
   ratio1Hist->GetYaxis()->SetLabelSize(0.1);
   ratio1Hist->GetYaxis()->SetTitleSize(0.1);
   ratio1Hist->GetYaxis()->SetTitleOffset(0.65); 
-  ratio1Hist->GetYaxis()->SetTitle("ratio");   
+  ratio1Hist->GetYaxis()->SetTitle("ratio1");   
   
   ratio1Hist->Draw();
 
@@ -1474,7 +1474,7 @@ TH1* HistFuncs::plotWithRatio(std::vector<HistFuncs::HistOpts> numers,HistFuncs:
     ratioHist->GetYaxis()->SetLabelSize(0.1);
     ratioHist->GetYaxis()->SetTitleSize(0.1);
     ratioHist->GetYaxis()->SetTitleOffset(0.65); 
-    ratioHist->GetYaxis()->SetTitle("ratio");   
+    ratioHist->GetYaxis()->SetTitle("ratio1");   
    
     if(firstHist){
       ratioHist->Draw();
@@ -1536,7 +1536,7 @@ TH1* HistFuncs::plotWithRatio(HistFuncs::HistOpts numer,std::vector<HistFuncs::H
     ratioHist->GetYaxis()->SetLabelSize(0.1);
     ratioHist->GetYaxis()->SetTitleSize(0.1);
     ratioHist->GetYaxis()->SetTitleOffset(0.65); 
-    ratioHist->GetYaxis()->SetTitle("ratio");   
+    ratioHist->GetYaxis()->SetTitle("ratio1");   
    
     if(firstHist){
       ratioHist->Draw();
@@ -1561,6 +1561,7 @@ TH1* HistFuncs::adjustForRatioCanvas(TH1* ratioHist,const std::string& title)
   ratioHist->GetYaxis()->SetTitleOffset(0.60); 
   ratioHist->GetYaxis()->SetTickLength(0.04);
   ratioHist->GetXaxis()->SetTickLength(0.06);
+  ratioHist->SetMaximum(1.2);
   
   return ratioHist;
 }

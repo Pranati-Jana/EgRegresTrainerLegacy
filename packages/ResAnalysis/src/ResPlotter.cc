@@ -13,7 +13,7 @@
 #include "TStyle.h"
 #include "RooPlot.h"
 #include "RooHist.h"
-
+#include "TLatex.h"
 
 void ResPlotter::Config::setDefaults()
 {
@@ -22,8 +22,8 @@ void ResPlotter::Config::setDefaults()
   resMax = 1.5;
   fitMin = 0.5;
   fitMax = 1.3;
-  fitMinHigh = 0.8;
-  fitMaxHigh = 1.1;
+  fitMinHigh = 0.7;
+  fitMaxHigh = 1.2;
   fitHighThres = 50;
 
   normalise = true;
@@ -33,8 +33,8 @@ void ResPlotter::Config::setDefaults()
 
   std::vector<std::pair<std::string,std::string> > varsTree1 = {
     {"(sc.rawEnergy+sc.rawESEnergy)/mc.energy","raw energy"},
-    {"(mean*invTar)","Run3 electron correction"},
-    {"(mean*invTar)","Run3 photon correction"},
+    {"(mean*invTar)","132X, GSF electron correction"},
+    {"(mean*invTar)","132X, photon correction"},
     {"(mean*invTar)","Run3 supercluster correction"}
   };
 
@@ -79,6 +79,15 @@ void ResPlotter::makeHists(std::vector<TTree*> trees,const std::string& label,co
 			   const std::string& vsVar1,const std::string& vsVar2,
 			   const std::vector<double>& vsVar1Bins,const std::vector<double>& vsVar2Bins)
 {
+  TLatex *mark3 = new TLatex();
+       mark3->SetNDC(true);
+       double startY = 0.93;
+       mark3->SetTextFont(42);
+       mark3->SetTextSize(0.06);
+       //mark->DrawLatex(0.15,startY,"#bf{CMS} #it{Preliminary}");
+       mark3->DrawLatex(0.15,startY,"#bf{CMS} #it{Simulation Preliminary}");
+       mark3->DrawLatex(0.90,startY,"#scale[0.8]{PbPb, 5.36 TeV}");
+       mark3->Draw();
   
   if(trees.size()!=cfg_.vars.size()){
     LogErr<<" error trees size "<<trees.size()<<" does not equal vars size "<<cfg_.vars.size()<<std::endl;
@@ -149,6 +158,7 @@ ResPlotter::makeHists(TTree* tree,const std::vector<std::pair<std::string,std::s
 void ResPlotter::printFits(const std::vector<int>& histNrs,const std::string& baseOutName)const
 {
   bool twoComp = histNrs.size()==2;  
+  //bool threeComp = histNrs.size()==3; 
   if(histNrs.size()!=2 && histNrs.size()!=3){
     LogErr << "Error, number of selected histograms must be either 2 or 3, not "<<histNrs.size()<<std::endl;
     return;
@@ -216,6 +226,15 @@ void ResPlotter::printResComps(const std::vector<ResFitter::ParamsVsVar>& fitPar
 			       const std::string& baseName,const std::pair<float,float>& plotRange,
 			       const std::string& regionStr)const
 {
+  TLatex *mark2 = new TLatex();
+       mark2->SetNDC(true);
+       double startY = 0.93;
+       mark2->SetTextFont(42);
+       mark2->SetTextSize(0.06);
+       //mark->DrawLatex(0.15,startY,"#bf{CMS} #it{Preliminary}");
+       mark2->DrawLatex(0.15,startY,"#bf{CMS} #it{Simulation Preliminary}");
+       mark2->DrawLatex(0.7,startY,"#scale[0.8]{PbPb, 5.36 TeV}");
+       mark2->Draw();
   gStyle->SetOptFit(0);
 
   for(size_t binNr=0;binNr<fitParamsVsVars[0].params().size();binNr++){
@@ -285,7 +304,7 @@ TGraph* ResPlotter::plotFitParamsVsVarComp(const std::vector<ResFitter::ParamsVs
   std::vector<std::pair<TGraph*,std::string> > legEntries;
   for(size_t graphNr=0;graphNr<graphs.size();graphNr++){
     if(graphNr==0){
-      graphs[graphNr]->GetYaxis()->SetRangeUser(min,max*1.1);
+      graphs[graphNr]->GetYaxis()->SetRangeUser(min,max*1.5);
       graphs[graphNr]->Draw("AP");
     }else{
       graphs[graphNr]->Draw("P");
@@ -308,7 +327,11 @@ TGraph* ResPlotter::plotFitParamsVsVarComp(const std::vector<ResFitter::ParamsVs
     ratioGraph->GetYaxis()->SetTitleOffset(0.60); 
     ratioGraph->GetYaxis()->SetTickLength(0.04);
     ratioGraph->GetXaxis()->SetTickLength(0.06);
+    ratioGraph->GetYaxis()->SetRangeUser(0.5, 1.5);
     pads[0]->cd();
+    ratioGraph->GetYaxis()->SetRangeUser(0.5, 1.5);
+    ratioGraph->GetYaxis()->SetNdivisions(509);
+
     return ratioGraph;
   }else{
     return graphs[0];
@@ -318,6 +341,15 @@ TGraph* ResPlotter::plotFitParamsVsVarComp(const std::vector<ResFitter::ParamsVs
 RooPlot* ResPlotter::plotResComp(std::vector<ResFitter::Param>& fitParams,
 				 const std::pair<float,float>& xRange)const
 {
+  TLatex *mark1 = new TLatex();
+       mark1->SetNDC(true);
+       double startY = 0.93;
+       mark1->SetTextFont(42);
+       mark1->SetTextSize(0.06);
+       //mark->DrawLatex(0.15,startY,"#bf{CMS} #it{Preliminary}");
+       mark1->DrawLatex(0.15,startY,"#bf{CMS} #it{Simulation Preliminary}");
+       mark1->DrawLatex(0.80,startY,"#scale[0.8]{PbPb, 5.36 TeV}");
+       mark1->Draw();
   double max = 0.;
   std::vector<std::pair<TGraph*,std::string>> legEntries;
   for(size_t fitNr=0;fitNr<fitParams.size();fitNr++){
@@ -350,7 +382,7 @@ RooPlot* ResPlotter::plotResComp(std::vector<ResFitter::Param>& fitParams,
     meanLabel->Draw();
     legEntries.push_back({graph,fitParam.legName});
   }
-  fitParams[0].plot->SetMaximum(max*1.05);
+  fitParams[0].plot->SetMaximum(max*1.2);
   auto leg = HistFuncs::makeLegend(legEntries,0.167038,0.56446,0.488864,0.735192);
   leg->SetFillStyle(0);
   leg->Draw();
@@ -361,8 +393,17 @@ RooPlot* ResPlotter::plotResComp(std::vector<ResFitter::Param>& fitParams,
 void ResPlotter::formatTwoComp(TGraph* graph,TPaveLabel* vsVar1Label,TPaveLabel* infoLabel,bool isMean)const
 { 
   float vsVar2Max = vsVar2Bins_.back();
-   
+  
   auto c1 = static_cast<TCanvas*>(gROOT->FindObject("c1"));
+  TLatex *mark = new TLatex();
+       mark->SetNDC(true);
+       double startY = 0.93;
+       mark->SetTextFont(42);
+       mark->SetTextSize(0.06);
+       //mark->DrawLatex(0.15,startY,"#bf{CMS} #it{Preliminary}");
+       mark->DrawLatex(0.15,startY,"#bf{CMS} #it{Simulation Preliminary}");
+       mark->DrawLatex(0.7,startY,"#scale[0.8]{PbPb, 5.36 TeV}");
+       mark->Draw();
   auto pads = HistFuncs::getFromCanvas<TPad>(c1,"TPad");
   for(auto &pad : pads){
     pad->SetGridx();
@@ -372,7 +413,7 @@ void ResPlotter::formatTwoComp(TGraph* graph,TPaveLabel* vsVar1Label,TPaveLabel*
   pads[0]->cd();
   auto topGraph = HistFuncs::getFromCanvas<TGraph>(pads[0],"TGraphErrors")[0];
   topGraph->GetXaxis()->SetRangeUser(0.,vsVar2Max);
-  if(isMean) topGraph->GetYaxis()->SetRangeUser(0.9,1.05);
+  if(isMean) topGraph->GetYaxis()->SetRangeUser(0.7,1.2);
   topGraph->SetTitle("");
   auto leg = HistFuncs::getFromCanvas<TLegend>(pads[0],"TLegend")[0];
   leg->SetTextSize(0.0440388);
@@ -386,7 +427,8 @@ void ResPlotter::formatTwoComp(TGraph* graph,TPaveLabel* vsVar1Label,TPaveLabel*
   graph->SetTitle((";"+vsVar2_.axisLabel()).c_str());
   graph->GetXaxis()->SetRangeUser(0,vsVar2Max);
   graph->SetMarkerStyle(8);
-  graph->GetYaxis()->SetRangeUser(0.8,1.1);
+  graph->GetYaxis()->SetRangeUser(0.9,1.4);
+  graph->GetYaxis()->SetNdivisions(509);
 }
 
 void ResPlotter::formatThreeComp(TGraph* graph,TPaveLabel* vsVar1Label,TPaveLabel* infoLabel,bool isMean)const 
@@ -407,7 +449,7 @@ void ResPlotter::formatThreeComp(TGraph* graph,TPaveLabel* vsVar1Label,TPaveLabe
   infoLabel->Draw();
   graph->SetTitle((";"+vsVar2_.axisLabel()).c_str());
   graph->GetXaxis()->SetRangeUser(0,vsVar2Max); 
-  if(isMean) graph->GetYaxis()->SetRangeUser(0.9,1.05);
+  if(isMean) graph->GetYaxis()->SetRangeUser(0.7,1.2);
 }
 
 

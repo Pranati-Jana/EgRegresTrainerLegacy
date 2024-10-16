@@ -3,19 +3,22 @@
    std::vector<double> puBins = {0,10,20,30,40,50,60,70};
    std::vector<double> resBins = {0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.055, 0.06, 0.065, 0.07, 0.075, 0.08, 0.09, 0.1,0.12,0.2,0.4,0.5};
    std::vector<double> etaBins = {0,0.5,1.0,1.4442,1.566,2.0,2.5};
+   //std::vector<double> etaBins = {0,1.442, 1.556, 2.4};
    std::vector<double> etaBins3 = {0,0.5,1.0,1.4442,1.566,2.0,2.5,3.0};
    std::vector<double> ptOneBinVeryLow = {1,100}; 
-   std::vector<double> ptOneBinLow = {1,500}; 
+   std::vector<double> ptOneBinLow = {0,50}; 
    std::vector<double> ptOneBinMedium = {500,1000}; 
    std::vector<double> ptOneBinHigh = {1000,1500}; 
    std::vector<double> ptOneBinUltra = {1500,3000}; 
    std::vector<double> ptOneBinSuper = {3000,4000};
 
+   std::vector<double> etaOneBinLow = {0,1.442}; 
+
    std::vector<double> etaBinsFine = {0,0.2,0.4,0.6,0.8,1.0,1.2,1.4442,1.566,1.8,2.0,2.2,2.4,2.6};
    // binning for different energy ranges
-   std::vector<double> etBinsVeryLow    = {1,10,40,60,80,100};
-   std::vector<double> etBinsLow    = {1,100,200,300,400,500};
-   std::vector<double> etBinsMedium = {500,600,700,800,900,1000};
+   std::vector<double> etBinsVeryLow    = {0,2,4,6,8,50};
+   std::vector<double> etBinsLow    = {0,2,4,6,8,50};
+   std::vector<double> etBinsMedium = {0,2,4,6,8,50};
    std::vector<double> etBinsHigh   = {1000,1100,1200,1300,1400,1500};
    std::vector<double> etBinsUltra  = {1500,1750,2000,2250,2500,2750,3000};
    std::vector<double> etBinsSuper  = {3000,3200,3400,3800,4000};
@@ -50,21 +53,26 @@
    //-----trees-----//
  
    //Directories for making trees
-   std::string resultsDirectory = "/home/hep/wrtabb/Egamma/EgRegresTrainerLegacy/results/";
-   std::string inputDirectory = "/home/hep/wrtabb/Egamma/input_trees/Run3/2021/";
+   std::string resultsDirectory = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/Regression_v2/resultsPhoV1_Run3_2023_UPC/";
+   //std::string inputDirectory = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/Regression_v2/resultsPhoV1_Run3_2023_UPC/";
 
+   //std::string resultsDirectory_Ele = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/Regression_v2/resultsEleV1_Run3_2023_UPC/";
+   std::string resultsDirectory_Ele = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/Regression_v2/resultsEleV1_Run3_2023_UPC_LowPtGsdEle/";
+   //std::string inputDirectory = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/Regression_v2/resultsEleV1_Run3_2023_UPC/";
+   std::string inputDirectory = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/Regression_v2/resultsEleV1_Run3_2023_UPC_LowPtGsdEle/";
+   
    // Run3_2021 Photons
-   std::string resultsPho = resultsDirectory + "resultsPho/";
-   std::string step3NamePho  = "regPhoEcal2021Run3_RealIC_RealTraining_stdVar_stdCuts_ntrees1500_applied.root";
-   TTree*treePhoStep3 = HistFuncs::makeChain("egRegTree",resultsPho+step3NamePho,1,1,1);
+   std::string resultsPho = resultsDirectory;
+   std::string step3NamePho  = "regPhoEcalRun3_2023_UPC_RealIC_RealTraining_stdVar_stdCuts_ntrees1500_applied.root";
+   TTree*treePhoStep3 = HistFuncs::makeChain("egRegTree","/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/NTUple/EGTree/EGTree_DoublePhoton_FlatPt0p5To50_RealEcalIC_fwRec_MC_HIRun2023_2024_08_18.root",1,1,1);
    TTree*treePhoStep3Friend = HistFuncs::makeChain("egRegTreeFriend",resultsPho+step3NamePho,1,1,1);
    treePhoStep3->AddFriend(treePhoStep3Friend);
 
    // Run3_2021 Mustache superclusters 
-   std::string resultsSC = resultsDirectory + "resultsSC/";
-   std::string step3NameSC  = "2021Run3_RealIC_RealTraining_stdVar_stdCuts_ntrees1500_applied.root";
-   std::string step2NameSC  = "2021Run3_RealIC_IdealTraining_stdVar_stdCuts_ntrees1500_applied.root";
-   TTree*treeSCStep3 = HistFuncs::makeChain("egRegTree",inputDirectory+"DoubleElectron_FlatPt-1To500_FlatPU0to70_120X_mcRun3_2021_realistic_v6-v1_AODSIM.root",1,1,1);
+   std::string resultsSC = resultsDirectory ;
+   std::string step3NameSC  = "regPhoEcalRun3_2023_UPC_RealIC_RealTraining_stdVar_stdCuts_ntrees1500_applied.root";
+   std::string step2NameSC  = "regPhoEcalRun3_2023_UPC_RealIC_IdealTraining_stdVar_stdCuts_ntrees1500_applied.root";
+   TTree*treeSCStep3 = HistFuncs::makeChain("egRegTree","/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/NTUple/EGTree/EGTree_DoublePhoton_FlatPt0p5To50_RealEcalIC_fwRec_MC_HIRun2023_2024_08_18.root",1,1,1);
    TTree*treeSCStep3Friend = HistFuncs::makeChain("egRegTreeFriend",resultsSC+step3NameSC,1,1,1);
    treeSCStep3->AddFriend(treeSCStep3Friend);
 
@@ -140,17 +148,48 @@
    TTree*treeAllPhoFriend = HistFuncs::makeChain("egRegTreeFriend",resultsAllPho+outputNameAllPho,1,1,1);
    treeAllPho->AddFriend(treeAllPhoFriend);
 
+   // Run3 UPC PbPb, one regression
+   std::string resultsPhoUPCPbPb = resultsDirectory;
+   std::string step3NamePhoUPCPbPb  = "regPhoEcalRun3_2023_UPC_RealIC_RealTraining_stdVar_stdCuts_ntrees1500_applied.root";
+   TTree*treePhoStep3UPCPbPb = HistFuncs::makeChain("egRegTree","/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/NTUple/EGTree/EGTree_DoublePhoton_FlatPt0p5To50_RealEcalIC_fwRec_MC_HIRun2023_2024_08_18.root",1,1,1);
+   TTree*treePhoStep3FriendUPCPbPb = HistFuncs::makeChain("egRegTreeFriend",resultsPhoUPCPbPb+step3NamePhoUPCPbPb,1,1,1);
+   treePhoStep3UPCPbPb->AddFriend(treePhoStep3FriendUPCPbPb);
+
+   // Run3 UPC PbPb,  regression1 Official sample
+   std::string resultsPhoUPCPbPb1 = resultsDirectory;
+   std::string step3NamePhoUPCPbPb1  = "regPhoEcalRun3_2023_UPC_RealIC_RealTraining_stdVar_stdCuts_ntrees1500_applied.root";
+   TTree*treePhoStep3UPCPbPb1 = HistFuncs::makeChain("egRegTree","/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/NTUple/EGTree/OFFICIAL/EGTree_DoublePhoton_FlatPt0p5To50_RealEcalIC_fwRec_Official_MC_HIRun2023_2024_09_12.root",1,1,1);
+   TTree*treePhoStep3FriendUPCPbPb1 = HistFuncs::makeChain("egRegTreeFriend",resultsPhoUPCPbPb1+step3NamePhoUPCPbPb1,1,1,1);
+   treePhoStep3UPCPbPb1->AddFriend(treePhoStep3FriendUPCPbPb1);
+
+   // Run3 UPC PbPb,  regression2
+  //  std::string resultsPhoUPCPbPb2 = "/eos/cms/store/cmst3/group/lightbylight/Pranati/LByL_2023/NewMC_2023Condition_EGRegression_19_07_2024/resultsPhoV1_Run3_2023_UPC/";
+  //  std::string step3NamePhoUPCPbPb2  = "regPhoEcalRun3_2023_UPC_RealIC_RealTraining_stdVar_stdCuts_ntrees1500_applied.root";
+  //  TTree*treePhoStep3UPCPbPb2 = HistFuncs::makeChain("egRegTree","/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/NTUple/EGTree/OFFICIAL/EGTree_DoublePhoton_FlatPt0p5To50_RealEcalIC_fwRec_Official_MC_HIRun2023_2024_09_12.root",1,1,1);
+  //  TTree*treePhoStep3FriendUPCPbPb2 = HistFuncs::makeChain("egRegTreeFriend",resultsPhoUPCPbPb2+step3NamePhoUPCPbPb2,1,1,1);
+  //  treePhoStep3UPCPbPb2->AddFriend(treePhoStep3FriendUPCPbPb2);
+   
+   // Run3 UPC PbPb, Official sample
+   std::string resultsEleUPCPbPb1 = resultsDirectory_Ele;
+   //std::string step3NameEleUPCPbPb1  = "regEleEcalTrkRun3_2023_UPC_RealIC_stdVar_stdCuts_ntrees1500_applied.root";
+   std::string step3NameEleUPCPbPb1  = "regEleEcalTrkRun3_2023_UPC_LowPtGsdEle_RealIC_stdVar_stdCuts_ntrees1500_applied.root";
+
+   //TTree*treeEleStep3UPCPbPb1 = HistFuncs::makeChain("egRegTree","/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/NTUple/EGTree/OFFICIAL/EGTree_DoubleElectron_FlatPt0p5To50_RealEcalIC_fwRec_Official_MC_HIRun2023_2024_09_12.root",1,1,1);
+   TTree*treeEleStep3UPCPbPb1 = HistFuncs::makeChain("egRegTree","/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/NTUple/EGTree/OFFICIAL/EGTree_LowPtGsfEle_DoubleElectron_FlatPt0p5To50_RealEcalIC_fwRec_Official_MC_HIRun2023_2024_09_12.root",1,1,1);
+   TTree*treeEleStep3FriendUPCPbPb1 = HistFuncs::makeChain("egRegTreeFriend",resultsEleUPCPbPb1+step3NameEleUPCPbPb1,1,1,1);
+   treeEleStep3UPCPbPb1->AddFriend(treeEleStep3FriendUPCPbPb1);
+   
    /*************************************
    #now as an example do the following, 
    #note the second tree argument is for when I was comparing to a different sample, 
    #ie 102X 2018, now we just set it to null
+   ResPlotter resPlotter;
+   resPlotter.makeHists({treePhoStep3UPCPbPb1, treePhoStep3UPCPbPb2},"Real IC, 1.566< |#eta|<2.5","mc.energy>0 && sc.rawEnergy>0 && ssFrac.sigmaIEtaIEta>0 && mc.dR<0.1 && ele.et>0 && eventnr%5>=3","mc.pt","sc.seedEta",etBins,etaBins);
+   //resPlotter.printFits({3,5,6},"plots/regresFitsThreeComp")
 
-   ResPlotter resPlotter
-   resPlotter.makeHists({regTreeEleReal2018V52018Reg,nullptr},"Real IC, 1.566< |#eta|<2.5","mc.energy>0 && sc.rawEnergy>0 && ssFrac.sigmaIEtaIEta>0 && mc.dR<0.1 && ele.et>0 && eventnr%5>=3","mc.pt","sc.seedEta",etBins,etaBins)
-   resPlotter.printFits({3,5,6},"plots/regresFitsThreeComp")
-
-   #or compare two variables 
-   resPlotter.printFits({3,6},"plots/regresFitsTwoComp")
+   
+   resPlotter.printFits({3,6},"plots/regresFitsTwoComp");
   
+   
    ************************************/
 }

@@ -19,7 +19,9 @@ enum PlotObject{
 	QCD_30To50,
 	QCD_300ToInf,
 	ELE_ALL_ENERGY,
-	PHO_ALL_ENERGY
+	PHO_ALL_ENERGY,
+	PHO_UPCPbPb,
+	ELE_UPCPbPb
 };
 void plot(bool dcbFit,PlotVariable plotVar,PlotObject plotObj);
 
@@ -36,7 +38,7 @@ void Plotter()
 	vector<PlotObject> plotObj = {
 //		ELE,
 //		PHO,
-		SC,
+//		SC,
 //		ELE_500To1000,
 //		ELE_1000To1500,
 //		ELE_1500To3000,
@@ -47,12 +49,14 @@ void Plotter()
 //		QCD_300ToInf,
 //		ELE_ALL_ENERGY,
 //		PHO_ALL_ENERGY
+       // PHO_UPCPbPb,
+		ELE_UPCPbPb,
 	};
 	int nObjects = plotObj.size();
 
 	// list of variables to plot
 	vector<PlotVariable> plotVar = {
-		ETA,
+		ETA
 //		PU_EB,
 //		PU_EE,
 //		ET_EB,
@@ -111,7 +115,7 @@ void plot(bool dcbFit,PlotVariable plotVar,PlotObject plotObj)
 	}
 	else if(plotObj == SC){
 		treeName1 = "treeSCStep3";
-		baseCuts += " && evt.eventnr%5>1 && sc.et>0";	
+		baseCuts += " && evt.eventnr%5>1 ";	
 		etBinning = "etBinsLow";
 		oneBinRange = "ptOneBinLow";
 		saveLoc = "/SC_update";
@@ -211,6 +215,29 @@ void plot(bool dcbFit,PlotVariable plotVar,PlotObject plotObj)
 		saveLoc = "/Photons_AllEnergy/Photons";
 		fitsArg = "0,2";
 	}
+	else if(plotObj == PHO_UPCPbPb){
+		treeName1 = "treePhoStep3UPCPbPb1";
+		//treeName2 = "treePhoStep3UPCPbPb2";
+		baseCuts += " && pho.et>0";	
+		etBinning = "etBinsLow";
+		oneBinRange = "ptOneBinLow";
+		//oneBinRange = "etabins";
+		saveLoc = "Photon/Pho";
+		fitsArg = "0,2";
+		etaBinning = "etaBins";
+		puBinning = "puBins";
+	}
+	else if(plotObj == ELE_UPCPbPb){
+
+		treeName1 = "treeEleStep3UPCPbPb1";
+		baseCuts += " && ele.et>0";	
+		etBinning = "etBinsLow";
+		oneBinRange = "ptOneBinLow";
+		saveLoc = "GSF_Ele2/Ele";
+		fitsArg = "0,1";
+		etaBinning = "etaBins";
+		puBinning = "puBins";
+	}
         
 	// Variable settings
 	if(plotVar==ETA){
@@ -238,7 +265,8 @@ void plot(bool dcbFit,PlotVariable plotVar,PlotObject plotObj)
 	}
 	else if(plotVar==ET_EB){
 		var1 	 = "mc.pt";
-		binning1 = oneBinRange;
+		binning1 = "etaOneBinLow";
+		//binning1 = etaBinning;
 		var2 	 = "mc.pt";
 		binning2 = etBinning;
 		saveTag  = "ET_EB";
@@ -264,7 +292,7 @@ void plot(bool dcbFit,PlotVariable plotVar,PlotObject plotObj)
 		return;
 	}
 
-	TString printFits = "res.printFits({"+fitsArg+"},\"plots/Run3/SC_Update/"+saveLoc+"_"+fitType+"_"+saveTag+"_\")";
+	TString printFits = "res.printFits({"+fitsArg+"},\"plots/"+saveLoc+"_"+fitType+"_"+saveTag+"_\")";
 	TString makeHists = "res.makeHists({"+treeName1+","+treeName2+"},\"\",\""+baseCuts+"\",\""+var1+"\",\""+var2+"\","+binning1+","+binning2+")";
 	gROOT->ProcessLine(makeHists);
 	gROOT->ProcessLine(printFits);

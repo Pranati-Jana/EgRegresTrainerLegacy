@@ -17,6 +17,8 @@
 #include "TH1.h"
 #include "TH2.h"
 #include "TGraphErrors.h"
+#include "TLatex.h"
+
 
 ResFitter::Param ResFitter::makeFit(TH1* hist,float xmin,float xmax,const std::string& fitVarName)const
 {
@@ -40,6 +42,16 @@ ResFitter::Param ResFitter::makeFit(TH2* hist2D,int binNr,float xmin,float xmax,
 
 ResFitter::Param ResFitter::makeCBFit(TH1* hist,float xmin,float xmax,const std::string& fitVarName)const
 {
+  TLatex *mark = new TLatex();
+       mark->SetNDC(true);
+       double startY = 0.92;
+       mark->SetTextFont(42);
+       mark->SetTextSize(0.06);
+       //mark->DrawLatex(0.15,startY,"#bf{CMS} #it{Preliminary}");
+       mark->DrawLatex(0.15,startY,"#bf{CMS} #it{Simulation Preliminary}");
+       mark->DrawLatex(0.58,startY,"#scale[0.8]{PbPb,(#sqrt{s_{NN}} = 5.36 TeV)}");
+       mark->Draw();
+
   RooRealVar  res("res","E^{reco}/E^{gen}", xmin,xmax,"");
   res.setBins(10000,"cache") ;
   res.setMin("cache",xmin) ;
@@ -74,6 +86,15 @@ ResFitter::Param ResFitter::makeCBFit(TH1* hist,float xmin,float xmax,const std:
 
 ResFitter::Param ResFitter::makeDCBFit(TH1* hist,float xmin,float xmax,const std::string& fitVarName)const
 {
+  TLatex *mark = new TLatex();
+       mark->SetNDC(true);
+       double startY = 0.92;
+       mark->SetTextFont(42);
+       mark->SetTextSize(0.06);
+       //mark->DrawLatex(0.15,startY,"#bf{CMS} #it{Preliminary}");
+       mark->DrawLatex(0.15,startY,"#bf{CMS} #it{Simulation Preliminary}");
+       mark->DrawLatex(0.58,startY,"#scale[0.8]{PbPb,(#sqrt{s_{NN}} = 5.36 TeV)}");
+       mark->Draw();
   RooRealVar  res("res","E^{reco}/E^{gen}", xmin,xmax,"");
   res.setBins(10000,"cache") ;
   res.setMin("cache",xmin) ;
@@ -117,6 +138,15 @@ ResFitter::Param ResFitter::makeDCBFit(TH1* hist,float xmin,float xmax,const std
 
 ResFitter::Param ResFitter::makeCruijffFit(TH1* hist,float xmin,float xmax,const std::string& fitVarName)const
 {
+  TLatex *mark = new TLatex();
+       mark->SetNDC(true);
+       double startY = 0.92;
+       mark->SetTextFont(42);
+       mark->SetTextSize(0.06);
+       //mark->DrawLatex(0.15,startY,"#bf{CMS} #it{Preliminary}");
+       mark->DrawLatex(0.15,startY,"#bf{CMS} #it{Simulation Preliminary}");
+       mark->DrawLatex(0.58,startY,"#scale[0.8]{PbPb,(#sqrt{s_{NN}} = 5.36 TeV)}");
+       mark->Draw();
   RooRealVar  res("res","E^{reco}/E^{gen}", xmin,xmax,"");
   res.setBins(10000,"cache") ;
   res.setMin("cache",xmin) ;
