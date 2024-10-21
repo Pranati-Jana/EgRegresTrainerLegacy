@@ -17,7 +17,7 @@
    std::vector<double> etaBinsFine = {0,0.2,0.4,0.6,0.8,1.0,1.2,1.4442,1.566,1.8,2.0,2.2,2.4,2.6};
    // binning for different energy ranges
    std::vector<double> etBinsVeryLow    = {0,2,4,6,8,50};
-   std::vector<double> etBinsLow    = {0,2,4,6,8,50};
+   std::vector<double> etBinsLow    = {1,2,4,6,8,50};
    std::vector<double> etBinsMedium = {0,2,4,6,8,50};
    std::vector<double> etBinsHigh   = {1000,1100,1200,1300,1400,1500};
    std::vector<double> etBinsUltra  = {1500,1750,2000,2250,2500,2750,3000};
@@ -54,12 +54,13 @@
  
    //Directories for making trees
    std::string resultsDirectory = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/Regression_v2/resultsPhoV1_Run3_2023_UPC/";
-   //std::string inputDirectory = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/Regression_v2/resultsPhoV1_Run3_2023_UPC/";
+   std::string inputDirectory = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/Regression_v2/resultsPhoV1_Run3_2023_UPC/";
 
-   //std::string resultsDirectory_Ele = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/Regression_v2/resultsEleV1_Run3_2023_UPC/";
-   std::string resultsDirectory_Ele = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/Regression_v2/resultsEleV1_Run3_2023_UPC_LowPtGsdEle/";
-   //std::string inputDirectory = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/Regression_v2/resultsEleV1_Run3_2023_UPC/";
-   std::string inputDirectory = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/Regression_v2/resultsEleV1_Run3_2023_UPC_LowPtGsdEle/";
+    std::string resultsDirectory_Ele = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/Regression_v2/resultsEleV1_Run3_2023_UPC/";
+   // std::string inputDirectory = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/Regression_v2/resultsEleV1_Run3_2023_UPC/";
+   //std::string resultsDirectory_Ele = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/Regression_v2/resultsEleV1_Run3_2023_UPC_LowPtGsdEle/";
+  
+   //std::string inputDirectory = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/Regression_v2/resultsEleV1_Run3_2023_UPC_LowPtGsdEle/";
    
    // Run3_2021 Photons
    std::string resultsPho = resultsDirectory;
@@ -158,7 +159,8 @@
    // Run3 UPC PbPb,  regression1 Official sample
    std::string resultsPhoUPCPbPb1 = resultsDirectory;
    std::string step3NamePhoUPCPbPb1  = "regPhoEcalRun3_2023_UPC_RealIC_RealTraining_stdVar_stdCuts_ntrees1500_applied.root";
-   TTree*treePhoStep3UPCPbPb1 = HistFuncs::makeChain("egRegTree","/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/NTUple/EGTree/OFFICIAL/EGTree_DoublePhoton_FlatPt0p5To50_RealEcalIC_fwRec_Official_MC_HIRun2023_2024_09_12.root",1,1,1);
+   TTree*treePhoStep3UPCPbPb1 = HistFuncs::makeChain("egRegTree","/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/NTUple/EGTree_NewReg/EGTree_NewReg_DoublePhoton_FlatPt0p5To50_RealEcalIC_fwRec_Official_MC_HIRun2023_2024_10_15.root",1,1,1);
+   //TTree*treePhoStep3UPCPbPb1 = HistFuncs::makeChain("egRegTree","/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/NTUple/EGTree/OFFICIAL/EGTree_DoublePhoton_FlatPt0p5To50_RealEcalIC_fwRec_Official_MC_HIRun2023_2024_09_12.root",1,1,1);
    TTree*treePhoStep3FriendUPCPbPb1 = HistFuncs::makeChain("egRegTreeFriend",resultsPhoUPCPbPb1+step3NamePhoUPCPbPb1,1,1,1);
    treePhoStep3UPCPbPb1->AddFriend(treePhoStep3FriendUPCPbPb1);
 
@@ -171,11 +173,13 @@
    
    // Run3 UPC PbPb, Official sample
    std::string resultsEleUPCPbPb1 = resultsDirectory_Ele;
-   //std::string step3NameEleUPCPbPb1  = "regEleEcalTrkRun3_2023_UPC_RealIC_stdVar_stdCuts_ntrees1500_applied.root";
-   std::string step3NameEleUPCPbPb1  = "regEleEcalTrkRun3_2023_UPC_LowPtGsdEle_RealIC_stdVar_stdCuts_ntrees1500_applied.root";
+   std::string step3NameEleUPCPbPb1  = "regEleEcalTrkRun3_2023_UPC_RealIC_stdVar_stdCuts_ntrees1500_applied.root";
+   //std::string step3NameEleUPCPbPb1  = "/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/NTUple/EGTree_NewReg/EGTree_NewReg_DoubleElectron_FlatPt0p5To50_RealEcalIC_fwRec_Official_MC_HIRun2023_2024_10_15.root";
+   //std::string step3NameEleUPCPbPb1  = "regEleEcalTrkRun3_2023_UPC_LowPtGsdEle_RealIC_stdVar_stdCuts_ntrees1500_applied.root";
 
    //TTree*treeEleStep3UPCPbPb1 = HistFuncs::makeChain("egRegTree","/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/NTUple/EGTree/OFFICIAL/EGTree_DoubleElectron_FlatPt0p5To50_RealEcalIC_fwRec_Official_MC_HIRun2023_2024_09_12.root",1,1,1);
-   TTree*treeEleStep3UPCPbPb1 = HistFuncs::makeChain("egRegTree","/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/NTUple/EGTree/OFFICIAL/EGTree_LowPtGsfEle_DoubleElectron_FlatPt0p5To50_RealEcalIC_fwRec_Official_MC_HIRun2023_2024_09_12.root",1,1,1);
+   TTree*treeEleStep3UPCPbPb1 = HistFuncs::makeChain("egRegTree","/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/NTUple/EGTree_NewReg/EGTree_NewReg_DoubleElectron_FlatPt0p5To50_RealEcalIC_fwRec_Official_MC_HIRun2023_2024_10_15.root",1,1,1);
+   //TTree*treeEleStep3UPCPbPb1 = HistFuncs::makeChain("egRegTree","/eos/cms/store/group/phys_heavyions/anstahll/CERN/PbPb2023/NTUple/EGTree/OFFICIAL/EGTree_LowPtGsfEle_DoubleElectron_FlatPt0p5To50_RealEcalIC_fwRec_Official_MC_HIRun2023_2024_09_12.root",1,1,1);
    TTree*treeEleStep3FriendUPCPbPb1 = HistFuncs::makeChain("egRegTreeFriend",resultsEleUPCPbPb1+step3NameEleUPCPbPb1,1,1,1);
    treeEleStep3UPCPbPb1->AddFriend(treeEleStep3FriendUPCPbPb1);
    

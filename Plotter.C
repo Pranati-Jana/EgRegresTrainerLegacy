@@ -49,8 +49,8 @@ void Plotter()
 //		QCD_300ToInf,
 //		ELE_ALL_ENERGY,
 //		PHO_ALL_ENERGY
-       // PHO_UPCPbPb,
-		ELE_UPCPbPb,
+        PHO_UPCPbPb,
+		//ELE_UPCPbPb,
 	};
 	int nObjects = plotObj.size();
 
@@ -222,7 +222,7 @@ void plot(bool dcbFit,PlotVariable plotVar,PlotObject plotObj)
 		etBinning = "etBinsLow";
 		oneBinRange = "ptOneBinLow";
 		//oneBinRange = "etabins";
-		saveLoc = "Photon/Pho";
+		saveLoc = "Photon_NewRegWith2018Regression/Pho";
 		fitsArg = "0,2";
 		etaBinning = "etaBins";
 		puBinning = "puBins";
@@ -233,7 +233,7 @@ void plot(bool dcbFit,PlotVariable plotVar,PlotObject plotObj)
 		baseCuts += " && ele.et>0";	
 		etBinning = "etBinsLow";
 		oneBinRange = "ptOneBinLow";
-		saveLoc = "GSF_Ele2/Ele";
+		saveLoc = "Electron_NewRegWith2018Regression/Ele";
 		fitsArg = "0,1";
 		etaBinning = "etaBins";
 		puBinning = "puBins";
@@ -292,7 +292,7 @@ void plot(bool dcbFit,PlotVariable plotVar,PlotObject plotObj)
 		return;
 	}
 
-	TString printFits = "res.printFits({"+fitsArg+"},\"plots/"+saveLoc+"_"+fitType+"_"+saveTag+"_\")";
+	TString printFits = "res.printFits({"+fitsArg+"},\"/eos/user/p/pjana/www/EGammaRegression/Test/"+saveLoc+"_"+fitType+"_"+saveTag+"_\")";
 	TString makeHists = "res.makeHists({"+treeName1+","+treeName2+"},\"\",\""+baseCuts+"\",\""+var1+"\",\""+var2+"\","+binning1+","+binning2+")";
 	gROOT->ProcessLine(makeHists);
 	gROOT->ProcessLine(printFits);
